@@ -27,6 +27,17 @@ As with all migration tools, you will most certainly have to run the migration
 several times to make sure everything is handled satisfactorily. You will 
 probably also have to tweek PHP.
 
+## Running bc2oa.php
+
+The script is designed to be run as user 1 from within a Drupal environment 
+(e.g. with the database bootstrapped and all of that). The easiest way to
+execute this is with a simple Drush command:
+
+  drush --user=1 php-script ./bc2oa.php
+  
+Note that this forces the user to user 1, and then executes the PHP script
+after Drupal is boostrapped. This could take a half an hour or more.
+
 ## Modifications?
 
 The tool here contains only the features I needed. Other migration needs may 

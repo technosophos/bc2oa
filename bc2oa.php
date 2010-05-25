@@ -12,7 +12,7 @@ require 'QueryPath/QueryPath.php';
 // ==== SETTINGS ====
 
 // The BaseCamp XML file to read
-$file = 'basecamp-export.xml';
+$file = 'spinehealth-20100507143515.xml';
 
 // The formatter used for content.
 $default_format = 5;
@@ -44,17 +44,15 @@ if (!file_exists($file)) {
 
 $qp = qp($file);
 
-// Build a map of user IDs to email addresses:
+// Build a map of user IDs to email addresses.
 $userMap = array();
 foreach($qp->branch(':root>firm>people>person') as $person) {
   $aid = $person->find('>id')->text();
   $email = $person->nextAll('email-address')->text();
   list($user, $domain,) = explode('@', $email);
   
-  // XXX: For debugging only!!!!
-  //$user = 'mbutcher';
-  
-  // Look up user IDs in Drupal:
+  // Look up user IDs in Drupal. This assumes a 1-to-1
+  // matching of email prefixes and usernames.
   $user_object = user_load(array('name' => $user));
   $uid = $user_object->uid;
   
@@ -64,9 +62,10 @@ foreach($qp->branch(':root>firm>people>person') as $person) {
 
 // Begin with messages: 
 
+// We are importing only one project. We grab the last one.
 $project = $qp->branch(':root>projects>project:last');
 
-// Node template:
+// Node template for case tracker nodes.
 $node_tpl = array(
   'type' => 'casetracker_basic_case',
   //'uid' => $author,
@@ -81,7 +80,6 @@ $node_tpl = array(
   //'tnid' => 0,
   //'translate' => 0,
   
-  
   'format' => $default_format,
   'casetracker' => array(
     'pid' => $default_project_id,
@@ -94,13 +92,18 @@ $node_tpl = array(
   //'og_groups_both' => array($default_og_group_id => 'Group'),
 );
 
+// Go through messages section and import all posts.
 foreach($project->find('>posts>post') as $post) {
+
+  // Centripital's export seems to use >messages>post.
+
   $title = $post->find('>title')->text();
   $aid = $post->end()->find('>author-id')->text();
   $author = $userMap[$aid];
   $date = @strtotime($post->end()->find('>posted-on')->text());
   $body = $post->end()->find('>body')->text();
   
+  // Get all of the comments for this post.
   $commentList = $post->end()->find('>comments>comment');
   
   //$format = '%s (by %s on %d)' . PHP_EOL;
@@ -132,7 +135,7 @@ foreach($project->find('>posts>post') as $post) {
     $cbody = $comment->end()->find('>body')->text();
     $csubject = substr($cbody, 0, 16);
     $cdate = @strtotime($comment->end()->find('>created-at:first')->text());
-    printf($cformat, $cauthor, $cdate);
+    //printf($cformat, $cauthor, $cdate);
     
     $comment = array(
       'author' => $usernameMap[$caid],
@@ -152,13 +155,13 @@ foreach($project->find('>posts>post') as $post) {
       'notifications_team' => array('selected' => TRUE),
       
       // Grab a copy from the parent node.
-      // Wish there was a way to skip this, as it will cause duplicate data
-      // to be written once for every comment.
+      // Wish there was a way to skip this, as it will cause duplicate write
+      // opperations for every comment.
       'casetracker' => $ct_copy,
     );
     comment_save($comment);
   }
-  print PHP_EOL;
+  //print PHP_EOL;
   
 }
 
@@ -216,7 +219,7 @@ foreach ($todolists as $todolist) {
       
       printf('  ' . $cformat, $tdcomment_author, $tdcomment_date);
 
-      // TODO: Write comment.
+      // Write comment.
       $comment = array(
         'author' => $usernameMap[$tdcomment_aid],
         'comment' => $tdcomment_body,
