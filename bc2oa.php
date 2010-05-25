@@ -212,7 +212,7 @@ foreach ($todolists as $todolist) {
     
     foreach ($item->end()->find('>comments>comment') as $comment) {
       $tdcomment_aid = $comment->find('>author-id')->text();
-      $tdcomment_author = $userMap[$caid];
+      $tdcomment_author = $userMap[$tdcomment_aid];
       $tdcomment_body = $comment->end()->find('>body')->text();
       $tdcomment_subject = substr($tdcomment_body, 0, 32);
       $tdcomment_date = @strtotime($comment->end()->find('>created-at:first')->text());
