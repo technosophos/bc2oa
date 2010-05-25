@@ -4,13 +4,16 @@ The bc2oa tool is a Drush-specific tool for migrating a BaseCamp project
 into an OpenAtrium project.
 
 In its current iteration, it is not intended to be a general-purpose tool,
-but a starting place for you to very easily write a custom importer.
+but a starting place for you to very easily write a custom importer. I 
+wrote it to meet my needs, and am providing it in hopes that others may find
+it useful, as well.
 
 ## Requirements
 
 * A working OpenAtrium installation
 * The QueryPath library (http://querypath.org)
 * The Drush Drupal shell tool (http://drupal.org/project/drush)
+* The ability to export XML files from BaseCamp.
 
 ## Installation
 
@@ -26,6 +29,14 @@ probably also have to tweek PHP.
 
 ## Modifications?
 
+The tool here contains only the features I needed. Other migration needs may 
+require you to add your own features.
+
 If you would like to contribute back to this project to improve the structure,
 add features, or just make it more generic, please do. This is an itch-scratching
 project (I only needed it once), so please do support it with new contributions.
+
+## License
+
+This software is released AS-IS under an MIT-style license. See LICENSE.txt for
+details.
