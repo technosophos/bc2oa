@@ -12,7 +12,7 @@ require 'QueryPath/QueryPath.php';
 // ==== SETTINGS ====
 
 // The BaseCamp XML file to read
-$file = 'spinehealth-20100507143515.xml.foo';
+$file = 'basecamp-export.xml';
 
 // The formatter used for content.
 $default_format = 5;
