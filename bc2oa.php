@@ -257,3 +257,9 @@ foreach ($todolists as $todolist) {
   
   
 }
+
+// Cleans up ordering for 'User Recent Activity' view.
+// Updates all nodes from the past 24 hours (the ones just imported)
+// that weren't caught and updates them.
+$yesterday = time() - (24 * 60 * 60);
+$q = db_query('UPDATE {node} SET changed = created WHERE changed > %s', $yesterday);
