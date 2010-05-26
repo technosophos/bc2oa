@@ -52,3 +52,8 @@ project (I only needed it once), so please do support it with new contributions.
 
 This software is released AS-IS under an MIT-style license. See LICENSE.txt for
 details.
+
+## Credits
+
+Original author: Matt Butcher
+Contributors: Rob Malon
