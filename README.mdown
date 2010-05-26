@@ -20,8 +20,9 @@ it useful, as well.
 1. Copy bc2oa.php into your OpenAtrium root directory (where index.php lives).
 2. Export your basecamp site to XML, and place the XML file in the same directory.
 3. Edit bc2oa.php, paying special attention to the settings section at the top.
-4. Run bc2oa.php as a Drush script. This will bootstrap Drupal for you.
-5. Wait.
+4. DISABLE the CT Mail module while you run the script (unless you like email).
+5. Run bc2oa.php as a Drush script. This will bootstrap Drupal for you.
+6. Wait.
 
 As with all migration tools, you will most certainly have to run the migration
 several times to make sure everything is handled satisfactorily. You will 
